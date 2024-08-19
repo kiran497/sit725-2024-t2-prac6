@@ -3,15 +3,12 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 const uri = "mongodb://localhost:27017/login";
-const port = 3001;  // Changed port
-
+const port = 3001;  
 const app = express();
 
-app.use(express.json());  // To parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // To parse URL-encoded data
-app.use(express.static('public'));  // Serve static files
-
-// Define the User schema and model
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true })); 
+app.use(express.static('public'));  
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true },
     password: { type: String, required: true },
@@ -24,11 +21,10 @@ mongoose.connect(uri)
     .then(() => console.log("Connected to MongoDB successfully!"))
     .catch(err => console.error("Failed to connect to MongoDB:", err));
 
-// Handle form submissions to add a user
 app.post('/addUser', async (req, res) => {
     const { username, password } = req.body;
 
-    console.log("Received data:", { username, password }); // Log received data
+    console.log("Received data:", { username, password }); 
 
     if (!username || !password) {
         console.log("Missing username or password");
