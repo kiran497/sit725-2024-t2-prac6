@@ -4,64 +4,77 @@
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <title>Welcome to my app</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
   </head>
-  <div> </div>
 
   <body>
+    <nav>
+      <div class="nav-wrapper navbar-size">
+          <a href="#" class="brand-logo"><img class="user-image-size" src="/images/user-image.png" alt="Logo"></a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li><a target="_blank" href="https://www.google.com">Google</a></li>
+          </ul>
+      </div>
+    </nav>
+    
+    <h1>Login</h1>
+    <form id="addUserForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+      <br><br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <br><br>
+      <button type="submit">Login</button>
+    </form>
+
+    <h1>TESTING FOR SOCKET</h1>
+    <div id="output"></div>
+
     <!--JavaScript at end of body for optimized loading-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script type="text/javascript" src="Script.js"></script>
-    <nav>
-      <div class="nav-wrapper">
-        <a href="#" class="brand-logo right">Welcome to my app</a>
-        <ul id="nav-mobile" class="left hide-on-med-and-down">
-          <li><a href="sass.html">sass</a></li>
-          <li><a href="badges.html">Components</a></li>
-          <li><a href="collapsible.html">JavaScript</a></li>
-        </ul>
-      </div>
-    </nav>
-    <h1>Login</h1>
-      <form id="addUserForm">
-          <label for="username">Username:</label>
-          <input type="text" id="username" name="username" required>
-          <br><br>
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" required>
-          <br><br>
-          <button type="submit">Login</button>
-      </form>
-      <script>
-        document.getElementById('addUserForm').addEventListener('submit', function(e) {
-          e.preventDefault(); // Prevent the default form submission
-          
-          const username = document.getElementById('username').value;
-          const password = document.getElementById('password').value;
+    
+    <script>
+      // Form submission handler
+      document.getElementById('addUserForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent the default form submission
 
-          fetch('/addUser', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ username, password })
-          })
-          .then(response => response.json())
-          .then(data => {
-              console.log(data.message); // Output the response message
-              alert(data.message); // Show the message to the user
-          })
-          .catch(error => {
-              console.error('Error:', error);
-          });
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        fetch('/addUser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.message); 
+          alert(data.message);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+
+      // Socket.IO Client Code
+      const socket = io('http://localhost:3000');
+
+      // Listen for the 'number' event
+      socket.on('number', (data) => {
+        console.log('Received:', data);
+        document.getElementById('output').innerText = 'Random Number: ' + data;
       });
     </script>
-      </body>
-        </div>
-    </div>
   </body>
 </html>

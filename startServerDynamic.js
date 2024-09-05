@@ -1,13 +1,11 @@
+const http = require('http');
 const express = require('express');
 const app = express();
-const path = require('path');
+const server = http.createServer(app);
+require('./sockets')(server);
 
-// Controllers
-const dynamicController = require('./controllers/dynamicController');
+app.use(express.static('public'));
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', dynamicController);
-
-app.listen(3001, () => {
-    console.log('Dynamic Server running on port 3001');
+server.listen(3000, () => {
+    console.log('Server running on port 3000');
 });

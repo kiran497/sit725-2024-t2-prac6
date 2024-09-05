@@ -42,3 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+const socket = io();
+
+// Listen for messages from the server
+socket.on('message', (msg) => {
+    console.log('Message from server: ' + msg);
+});
+
+// Send a message to the server
+socket.emit('message', 'Hello server!');
